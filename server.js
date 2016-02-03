@@ -1,44 +1,56 @@
 'use strict';
 
-const http = require('http');
+const express = require('express');
+const app = express();
 //This will give an alterntive in case I dont pass in a port in terminal
 const PORT = process.env.PORT || 3000;
 
-http.createServer((req, res) => {
-  console.log(req.method, req.url);
+//http.createServer((req, res) => {
+  //console.log(req.method, req.url);
 
-  debugger;
+  //debugger;
+  ////If the code is not with an actual html order this forces it to assume its html
 
-  //If the code is not with an actual html order this forces it to assume its html
+//})
+
+app.get('/hello', (req, res) => {
+  const name = req.query.name;
+  const msg =`<h1>Hello ${name}!!!!</h1>
+  <h2>Goodbye ${name}</h2>`;
+
+  console.log("query params", req.query);
 
   res.writeHead(200, {
     'Content-type': 'text/html'
   });
 
-  if (req.url === '/hello'){
-    const msg = '<h1>Hello World!!</h1>';
-
+    //chunk response by character
     msg.split('').forEach((char, i) => {
       setTimeout (() => {
         res.write(char);
       }, 1000 * i);
      });
 
+    //wait for all characters to be sent
+    setTimeout (() => {
+    res.end()
+    }, msg.length * 1000 + 2000);
+ });
 
-    setInterval (() => {
-    res.end();
-    }, 20000);
+app.get('/random/:min/:max', (req, res) => {
+  const min = req.params.min;
+  const mac = req.params.max;
+  res.end(function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  });
+});
 
-  } else if (req.url === '/random') {
-    res.end(Math.random().toString());
-  } else {
-    res.writeHead(403);
-    res.end('<h1>Access Denied!!</h1>');
-  };
+app.all('*', (req, res) => {
+  res
+  .status(res)
+  .send('Access Denied');
+});
 
-  //If the code has correct html code then it works without the writeHead code
-  //res.end('<<h1>Hello World!!</h1>');
-
-}).listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Node.js server started. Listening on port ${PORT}`);
 });
