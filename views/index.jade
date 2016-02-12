@@ -1,0 +1,9 @@
+doctype html
+html
+ head
+  title= title
+ body
+  h1 Welcome to #{title}
+  p The date is now #{date.toLocaleDateString('en-US')}
+  h2 Breaking News:
+   a(href=doc.url)=doc.title
