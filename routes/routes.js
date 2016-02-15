@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
   News.findOne().sort('-_id').exec((err, doc) => {
     if(err) throw err;
 
-      res.render('index', {
+    res.render('index', {
       date: new Date(),
       doc: doc.top[0] 
     });
@@ -57,31 +57,31 @@ app.get('/sendphotos', (req, res) => {
 app.post('/sendphotos', upload.single('image'), (req, res) => {
   console.log(req.body, req.file);
    // get the temporary location of the file
-    var tmp_path = req.file.path;
+  var tmp_path = req.file.path;
     // set where the file should actually exists - in this case it is in the "images" directory
-    var target_path = req.file.path + path.extname(req.file.originalname);
+  var target_path = req.file.path + path.extname(req.file.originalname);
     // move the file from the temporary location to the intended location
   fs.rename(tmp_path, target_path, function(err) {
-        if (err) throw err;
+    if (err) throw err;
         // delete the temporary file,
         // so that the explicitly set temporary upload dir does not get filled with unwanted files
-        fs.unlink(tmp_path, function() {
-      });
+    fs.unlink(tmp_path, function() {
+    });
   // A single images
-  imgur.uploadFile(req.file.path)
+    imgur.uploadFile(req.file.path)
      .then(function (json) {
-        console.log(json.data.link);
+       console.log(json.data.link);
      })
      .catch(function (err) {
-        console.error(err.message);
-      });
+       console.error(err.message);
+     });
     res.send('<h1>Thanks for sending your photo</h1>');
   });
 });
 
 app.get('/hello', (req, res) => {
   const name = req.query.name;
-  const msg =`<h1>Hello ${name}!!!!</h1>
+  const msg = `<h1>Hello ${name}!!!!</h1>
   <h2>Goodbye ${name}</h2>`;
 
   console.log("query params", req.query);
@@ -91,17 +91,17 @@ app.get('/hello', (req, res) => {
   });
 
     //chunk response by character
-    msg.split('').forEach((char, i) => {
-      setTimeout (() => {
+  msg.split('').forEach((char, i) => {
+    setTimeout (() => {
         res.write(char);
       }, 1000 * i);
-     });
+  });
 
     //wait for all characters to be sent
-    setTimeout (() => {
+  setTimeout (() => {
     res.end()
-    }, msg.length * 1000 + 2000);
- });
+  }, msg.length * 1000 + 2000);
+});
 
 app.get('/random/:min/:max', (req, res) => {
   const min = req.params.min;

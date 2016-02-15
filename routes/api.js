@@ -34,8 +34,8 @@ app.get('/api/weather', (req, res) => {
   request.get(url, (err, response, body) => {
     if(err) throw err;
 
-		res.send(JSON.parse(body));
-	});
+		    res.send(JSON.parse(body));
+	  });
 });
 
 app.get('/api/news', (req, res) => {
