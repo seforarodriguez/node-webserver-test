@@ -12,8 +12,24 @@ const api = require('./routes/api');
 
 //This will give an alterntive in case I dont pass in a port in terminal
 const PORT = process.env.PORT || 3000;
-const MONGODB_URL = 'mongodb://localhost:27017/WEBSERVER';
 
+const MONGODB_HOST = process.env.MONGODB_HOST|| 'localhost';
+const MONGODB_PORT = process.env.MONGODB_PORT || 27017;
+const MONGODB_USER = process.env.MONGODB_USER || '';
+const MONGODB_PASS = process.env.MONGODB_PASS || '';
+const MONGODB_NAME = 'node-webserver';
+
+const MONGODB_AUTH = MONGODB_USER
+  ? `${MONGODB_USER}:${MONGODB_PASS}@`
+  : '';
+
+const MONGODB_URL = `mongodb://${MONGODB_AUTH}${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_NAME}`;
+
+//if (process.env.NODE_ENV === 'production') {
+//	MONGODB_URL = 'mongodb://ds039195.mongolab.com:39195/node-webserver';
+//} else {
+//	MONGODB_URL = 'mongodb://localhost:27017/WEBSERVER';
+//}
 
 app.set('view engine', 'jade');
 app.locals.title = "The Super Cool App";
@@ -37,9 +53,4 @@ mongoose.connect(MONGODB_URL);
 });
 
 module.export = app;
-
-
-
-
-
 
