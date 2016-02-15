@@ -21,6 +21,8 @@ app.get('/', (req, res) => {
 
     doc = doc || {top: ''};
 
+      console.log('doc',doc);
+
     res.render('index', {
       date: new Date(),
       doc: doc.top[0] 
