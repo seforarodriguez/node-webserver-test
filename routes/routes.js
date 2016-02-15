@@ -19,9 +19,11 @@ app.get('/', (req, res) => {
   News.findOne().sort('-_id').exec((err, doc) => {
     if(err) throw err;
 
+    doc = doc || {top: ''};
+
     res.render('index', {
       date: new Date(),
-      doc: doc.top[0] 
+      doc: .top[0] 
     });
   });
 });
