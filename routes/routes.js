@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 
     res.render('index', {
       date: new Date(),
-      doc: .top[0] 
+      doc: doc.top[0] 
     });
   });
 });
