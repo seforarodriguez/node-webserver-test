@@ -3,6 +3,6 @@ node_modules/
 coverage/
 server.js
 models/
+controllers/
 routes/
-
 

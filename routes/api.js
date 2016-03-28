@@ -1,21 +1,16 @@
 'use strict';
 
 const express = require('express');
-const app = express.Router();
+const router = express.Router();
 
-const upload = require('multer')({dest: 'tmp/uploads'});
 const request = require('request');
 const _ = require('lodash');
 const cheerio = require('cheerio');
 
-// we need the fs module for moving the uploaded files
-const fs = require('fs');
-
 const News = require('../models/news');
 const Allcaps = require('../models/allcaps');
-const Contacts = require('../models/contact');
 
-app.post('/api', (req, res) => {
+router.post('/api', (req, res) => {
   const obj = _.mapValues(req.body, val => val.toUpperCase());
 
   const caps = new Allcaps(obj);
@@ -28,7 +23,7 @@ app.post('/api', (req, res) => {
 });
 
 
-app.get('/api/weather', (req, res) => {
+router.get('/api/weather', (req, res) => {
   const API_KEY = '5d5ee61ef25ca388f69b39bf5c31e950'
   const url = `https://api.forecast.io/forecast/${API_KEY}/7.8267,-122.423`
   request.get(url, (err, response, body) => {
@@ -38,11 +33,14 @@ app.get('/api/weather', (req, res) => {
 	  });
 });
 
-app.get('/api/news', (req, res) => {
+router.get('/api/news', (req, res) => {
   News.findOne().sort('-_id').exec((err, doc) => {
 
     if (doc) {
-      const FIFTEEN_MINUTES_IN_MS = 15 * 60 * 1000;
+      const MILISECONDS = 1000;
+      const MINUTES = 60;
+      const FIFTEEN_MINS = 15;
+      const FIFTEEN_MINUTES_IN_MS = FIFTEEN_MINS * MINUTES * MILISECONDS;
       const diff = new Date() - doc._id.getTimestamp() - FIFTEEN_MINUTES_IN_MS;
       const lessThan15MinutesAgo = diff < 0;
 
@@ -88,4 +86,4 @@ app.get('/api/news', (req, res) => {
     });
   });
 });
-module.exports = app
+module.exports = router
